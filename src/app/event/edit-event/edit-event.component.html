@@ -1,0 +1,50 @@
+<div class="col-md-8 event-container">
+  <h2 class="text-center">{{title}}</h2>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+
+      <mat-form-field appearance="standard">
+        <mat-label>Date:</mat-label>
+        <input matInput [formControl]="dateControl" [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label>Time:</mat-label>
+        <input matInput type="time" [formControl]="timeControl">
+      </mat-form-field>
+
+    </div>
+    <div formArrayName="projects" class="form-group">
+      <div *ngFor="let levelArray of projectAltLevelArray.controls; let alt=index">
+        <mat-form-field appearance="standard" *ngFor="let projectControl of levelArray.controls; let level=index">
+          <mat-label>Project:</mat-label>
+          <mat-select *ngIf="!addProject(alt, level)" [formControl]="projectControl" name="project">
+            <mat-option *ngFor="let project of projectSelectionLists[alt][level]" [value]="project.id">
+              {{project.code}}
+            </mat-option>'
+          </mat-select>
+          <input matInput *ngIf="addProject(alt, level)" id="projectName" (keyup)="projectNameKeyup($event)">
+          <button class="btn btn-success" type="button" *ngIf="addProject(alt, level)" (click)="saveProjectName()">
+          	OK
+          </button>
+          <button class="btn btn-success" type="button" *ngIf="addProject(alt, level)" (click)="cancelProjectName()">
+          	Cancel
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-group">
+
+      <mat-form-field appearance="standard">
+        <mat-label>Comment:</mat-label>
+        <input matInput type="text" [formControl]="commentControl">
+      </mat-form-field>
+
+    </div>
+
+    <button class="btn btn-success" type="submit" [disabled]="!editForm.valid">{{title}}</button>
+  </form>
+</div>

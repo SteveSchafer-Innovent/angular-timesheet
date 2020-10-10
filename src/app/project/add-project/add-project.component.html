@@ -1,0 +1,10 @@
+<div class="col-md-6 project-container">
+  <h2 class="text-center">Add Project</h2>
+  <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Project Name:</label>
+      <input type="text" formControlName="name" placeholder="name" name="name" class="form-control" id="name">
+    </div>
+    <button class="btn btn-success" type="submit" [disabled]="!addForm.valid">Add</button>
+  </form>
+</div>

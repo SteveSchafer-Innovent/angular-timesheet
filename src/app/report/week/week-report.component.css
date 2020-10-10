@@ -1,0 +1,11 @@
+.report-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+.report-container td.duration {
+  text-align: right;
+}
+.report-container tr.total {
+  font-weight: bold;
+}

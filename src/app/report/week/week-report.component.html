@@ -1,0 +1,31 @@
+<div class="col-md-8 report-container">
+  <h2 style="margin: auto"> Week of {{getDateString(0)}}</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <!-- https://stackoverflow.com/questions/50008477/how-to-use-property-binding-with-td-attribute-colspan-in-angular -->
+      <td [attr.colspan]="maxProjectCount">
+        <button class="btn btn-success" style="margin-left: 20px;" (click)="gotoWeek(-1)">
+          {{getDateString(-7)}} &lt;
+        </button>
+        <button class="btn btn-success" style="margin-left: 20px;" (click)="gotoWeek(1)">
+          &gt; {{getDateString(7)}}
+        </button>
+      </td>
+      <th *ngFor="let date of dates; let i=index" class="duration">
+        <button class="btn" (click)="gotoDay(i)">{{date}}</button>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of rows" [ngClass]="{'total' : row.isTotal}">
+      <td *ngFor="let project of row.projects" class="project">
+        {{project}}
+      </td>
+      <td *ngFor="let duration of row.durations" class="duration">
+        {{(duration / (1000 * 60 * 60)).toFixed(2)}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

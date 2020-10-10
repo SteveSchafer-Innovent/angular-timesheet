@@ -1,0 +1,46 @@
+<div class="col-md-8 event-container">
+  <h2 style="margin: auto"> {{getDateString(0)}} Events</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <td colspan="5">
+        <button class="btn btn-danger" (click)="addEvent()"> Add Event</button>
+        <button class="btn btn-success" style="margin-left: 20px;" (click)="gotoDay(-1)">
+          {{getDateString(-1)}} &lt;
+        </button>
+        <button class="btn btn-success" style="margin-left: 20px;" (click)="gotoDay(1)">
+          &gt; {{getDateString(1)}}
+        </button>
+        <button *ngIf="!isToday" class="btn btn-success" style="margin-left: 20px;" (click)="gotoDay(null)">
+        	Today
+        </button>
+        <button class="btn btn-success" style="margin-left: 20px;" (click)="week()">Week</button>
+        <button class="btn" style="margin-left: 20px; color: white; background-color: #007bff; " (click)="personal()">
+          Personal
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <th class="hidden">Id</th>
+      <th>Time</th>
+      <th>Projects</th>
+      <th>Duration</th>
+      <th>Comment</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let event of reportEvents">
+      <td class="hidden">{{event.id}}</td>
+      <td>{{event.time | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{event.projects | projects }}</td>
+      <td>{{event.duration | duration }}</td>
+      <td>{{event.comments}}</td>
+      <td>
+        <button class="btn btn-success" (click)="deleteEvent(event)"> Delete</button>
+        <button class="btn btn-success" (click)="editEvent(event)" style="margin-left: 20px;"> Edit</button>
+        <button class="btn btn-success" (click)="dupEvent(event)" style="margin-left: 20px;"> Dup</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
