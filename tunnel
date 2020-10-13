@@ -1,0 +1,10 @@
+#!/bin/sh
+cd "$(dirname "${BASH_SOURCE[0]}")"
+PORT=9080
+HOST="centos@mail3.stephenschafer.com"
+LOG=$HOME/logs
+mkdir -p $LOG
+if ! ./tunnel-is-active; then
+	ssh -f -N -L $PORT:localhost:9080 -o ServerAliveInterval=3 -o ServerAliveCountMax=100\
+	 $HOST >$LOG/tunnel.log 2>$LOG/tunnel.err.log &
+fi

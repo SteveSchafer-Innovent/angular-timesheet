@@ -1,1 +1,11 @@
-<p>edit-project works!</p>
+<div class="col-md-6 project-container">
+  <h2 class="text-center">{{title}}</h2>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Project Name:</label>
+      <input type="text" formControlName="name" placeholder="name" name="name" class="form-control" id="name">
+    </div>
+    <button class="btn btn-success" type="submit" [disabled]="!editForm.valid">Save</button>
+    <button class="btn btn-success" type="cancel" style="margin-left: 20px; " (click)="cancel()">Cancel</button>
+  </form>
+</div>

@@ -96,7 +96,7 @@ export class EditEventComponent implements OnInit {
     ];
     for(let i = 0; i < data.result.length; i++) {
       let dataResult = data.result[i];
-      let project = { id: dataResult[0], parentId: null, code: dataResult[1] };
+      let project = { id: dataResult.id, parentId: null, code: dataResult.code };
       console.log(project);
       this.projectSelectionLists[alt][level].push(project);
     }
@@ -140,9 +140,7 @@ export class EditEventComponent implements OnInit {
         this.addProjectAlt = alt;
         this.addProjectLevel = level;
         this.addProjectParentId = parentId == 0 ? null : parentId;
-        // let parentId = level <= 0 ? null : component.projectSelectionLists[alt][level - 1][0].id;
         console.log("parentId = " + parentId);
-        // this.router.navigate(['add-project', {parentId: parentId}]);
       }
       else {
         component.projectSelectionLists[alt].length = level + 2;

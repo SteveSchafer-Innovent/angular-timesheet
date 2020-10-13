@@ -2,12 +2,16 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.0.
 
-<code>sudo npm install -g @angular/cli<br/>
-ng new angular-timesheet<br/>
-cd angular-timesheet<br/>
-ng generate component project/list-project<br/>
+sudo npm install -g @angular/cli
+
+ng new angular-timesheet
+
+cd angular-timesheet
+
+ng generate component project/list-project
+
 etc...
-</code>
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

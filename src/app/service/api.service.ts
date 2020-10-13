@@ -93,14 +93,6 @@ export class ApiService {
     return this.http.post<ApiResponse>(`${this.baseUrl}/events/`, postEvent);
   }
 
-  getRootProjects(): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(`${this.baseUrl}/projects/root`);
-  }
-
-  getProjects(parentId: number): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(`${this.baseUrl}/projects/${parentId}`)
-  }
-
   deleteEvent(id: number): Observable<ApiResponse> {
     return this.http.delete<ApiResponse>(`${this.baseUrl}/event/${id}`);
   }
@@ -109,9 +101,55 @@ export class ApiService {
     return this.http.get<ApiResponse>(`${this.baseUrl}/dup/${id}`);
   }
 
+  getRootProjects(): Observable<ApiResponse> {
+    console.log(`apiService getRootProjects`);
+    return this.http.get<ApiResponse>(`${this.baseUrl}/projects/root`);
+  }
+
+  getProjects(parentId: number): Observable<ApiResponse> {
+    console.log(`apiService getProjects ${parentId}`);
+    return this.http.get<ApiResponse>(`${this.baseUrl}/projects/${parentId}`)
+  }
+
+  getProject(id: number): Observable<ApiResponse> {
+    console.log(`apiService getProject ${id}`);
+    return this.http.get<ApiResponse>(`${this.baseUrl}/project/${id}`);
+  }
+
   createProject(project: Project): Observable<ApiResponse> {
-    console.log("createProject");
-    console.log(project);
     return this.http.post<ApiResponse>(`${this.baseUrl}/projects/`, project);
+  }
+
+  addProject(parentId: number, code: string): Observable<ApiResponse> {
+    let project = {id: null, parentId: parentId, code: code};
+    return this.http.post<ApiResponse>(`${this.baseUrl}/projects`, project);
+  }
+
+  addRootProject(code: string): Observable<ApiResponse> {
+    let project = {id: null, parentId: null, code: code};
+    return this.http.post<ApiResponse>(`${this.baseUrl}/projects`, project);
+  }
+
+  editProject(id: number, parentId: number, code: string): Observable<ApiResponse> {
+    let project = {id: id, parentId: parentId, code: code};
+    return this.http.put<ApiResponse>(`${this.baseUrl}/projects`, project);
+  }
+
+  editRootProject(id: number, code: string): Observable<ApiResponse> {
+    let project = {id: id, parentId: null, code: code};
+    return this.http.put<ApiResponse>(`${this.baseUrl}/projects`, project);
+  }
+
+  deleteProject(id: number): Observable<ApiResponse> {
+    console.log(`apiService deleteProject ${id}`);
+    let response = this.http.delete<ApiResponse>(`${this.baseUrl}/project/${id}`);
+    console.log(response);
+    return response;
+  }
+
+  canDeleteProject(id: number): Observable<ApiResponse> {
+    console.log(`apiService canDeleteProject ${id}`);
+    let response = this.http.get<ApiResponse>(`${this.baseUrl}/project/canDelete/${id}`);
+    return response;
   }
 }

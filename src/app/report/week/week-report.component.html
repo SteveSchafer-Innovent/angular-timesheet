@@ -13,16 +13,16 @@
         </button>
       </td>
       <th *ngFor="let date of dates; let i=index" class="duration">
-        <button class="btn" (click)="gotoDay(i)">{{date}}</button>
+        <button [ngClass]="{'btn': true, 'btn-success': isToday(date)}" (click)="gotoDay(i)">{{date}}</button>
       </th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let row of rows" [ngClass]="{'total' : row.isTotal}">
+    <tr *ngFor="let row of rows; let r=index" [ngClass]="{'total' : row.isTotal}">
       <td *ngFor="let project of row.projects" class="project">
         {{project}}
       </td>
-      <td *ngFor="let duration of row.durations" class="duration">
+      <td *ngFor="let duration of row.durations; let d=index" [ngClass]="{'duration': true, 'highlighted': isHighlighted(r, d)}" (click)="clickCell(r, d)">
         {{(duration / (1000 * 60 * 60)).toFixed(2)}}
       </td>
     </tr>

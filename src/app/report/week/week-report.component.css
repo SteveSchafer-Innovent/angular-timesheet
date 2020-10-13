@@ -5,7 +5,11 @@
 }
 .report-container td.duration {
   text-align: right;
+  cursor: pointer;
 }
 .report-container tr.total {
   font-weight: bold;
+}
+.report-container td.highlighted {
+	background-color: #DDD;
 }

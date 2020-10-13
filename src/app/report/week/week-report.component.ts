@@ -5,8 +5,13 @@ import { formatDate } from '@angular/common';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { WeekReportRow } from "../../model/week-report-row.model";
 import { ApiService } from "../../service/api.service";
+
+class WeekReportRow {
+  projects: string[];
+  durations: number[];
+  highlighted: boolean[];
+}
 
 @Component({
   selector: 'app-week-report-component',
@@ -139,7 +144,7 @@ export class WeekReportComponent implements OnInit {
     return dateString;
   }
 
-   gotoWeek(delta: number): void {
+  gotoWeek(delta: number): void {
     let date = new Date(this.selectedDate);
     if(delta != null) {
       date.setDate(date.getDate() + delta * 7);
@@ -156,12 +161,29 @@ export class WeekReportComponent implements OnInit {
     });
   }
 
-   gotoDay(delta: number): void {
+  gotoDay(delta: number): void {
     let date = new Date(this.selectedDate);
     if(delta != null) {
       date.setDate(date.getDate() + delta);
     }
     let dateString = formatDate(date, 'yyyy-MM-dd', 'en-US');
     this.router.navigate(['list-event', { date: dateString }]);
+  }
+
+  isToday(date: string): boolean {
+    return date == formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+  }
+
+  clickCell(r: number, d: number): void {
+    let row = this.rows[r];
+    if(!row.highlighted) {
+      row.highlighted = [];
+    }
+    row.highlighted[d] = !row.highlighted[d];
+  }
+
+  isHighlighted(r: number, d: number): boolean {
+    let row = this.rows[r];
+    return row.highlighted && row.highlighted.length > d && row.highlighted[d];
   }
 }

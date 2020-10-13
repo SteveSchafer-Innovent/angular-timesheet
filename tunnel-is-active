@@ -1,0 +1,16 @@
+#!/bin/sh
+cd "$(dirname "${BASH_SOURCE[0]}")"
+PORT=9080
+USERNAME=$(whoami)
+LOG=$(mktemp /var/tmp/tunnel-$USERNAME-ps.log.XXXXXX)
+ps ux --cols 1024 >"$LOG"
+RUNNING="false"
+SEARCH="ssh -f -N -L $PORT:"
+if grep "$SEARCH" "$LOG" >/dev/null 2>/dev/null ; then
+	RUNNING="true"
+	echo "db-$PORT is active"
+else
+	echo "db-$PORT is inactive"
+fi
+rm -f "$LOG"
+test "$RUNNING" = "true"

@@ -5,7 +5,6 @@ import { ListUserComponent } from "./user/list-user/list-user.component";
 import { EditUserComponent } from "./user/edit-user/edit-user.component";
 import { ListEventComponent } from "./event/list-event/list-event.component";
 import { EditEventComponent } from "./event/edit-event/edit-event.component";
-import { AddProjectComponent } from "./project/add-project/add-project.component";
 import { ListProjectComponent } from "./project/list-project/list-project.component";
 import { EditProjectComponent } from "./project/edit-project/edit-project.component";
 import { WeekReportComponent } from "./report/week/week-report.component";
@@ -17,7 +16,6 @@ const routes: Routes = [
   { path: 'edit-user', component: EditUserComponent },
   { path: 'list-event', component: ListEventComponent },
   { path: 'edit-event', component: EditEventComponent },
-  { path: 'add-project', component: AddProjectComponent },
   { path: 'list-project', component: ListProjectComponent },
   { path: 'edit-project', component: EditProjectComponent },
   { path: 'report-week', component: WeekReportComponent },

@@ -3,7 +3,7 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <td colspan="5">
+      <td colspan="6">
         <button class="btn btn-danger" (click)="addEvent()"> Add Event</button>
         <button class="btn btn-success" style="margin-left: 20px;" (click)="gotoDay(-1)">
           {{getDateString(-1)}} &lt;
@@ -14,7 +14,12 @@
         <button *ngIf="!isToday" class="btn btn-success" style="margin-left: 20px;" (click)="gotoDay(null)">
         	Today
         </button>
-        <button class="btn btn-success" style="margin-left: 20px;" (click)="week()">Week</button>
+        <button class="btn btn-success" style="margin-left: 20px;" (click)="week()">
+          Week
+        </button>
+        <button class="btn btn-success" style="margin-left: 20px;" (click)="projects()">
+          Projects
+        </button>
         <button class="btn" style="margin-left: 20px; color: white; background-color: #007bff; " (click)="personal()">
           Personal
         </button>
@@ -26,6 +31,7 @@
       <th>Projects</th>
       <th>Duration</th>
       <th>Comment</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>

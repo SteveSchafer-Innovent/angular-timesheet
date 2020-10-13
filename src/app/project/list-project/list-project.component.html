@@ -1,1 +1,37 @@
-<p>list-project works!</p>
+<div class="col-md-6 project-container">
+  <h2 style="margin: auto"> Projects</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <td colspan="2">
+        <button class="btn btn-danger" style="width:100px" (click)="addRootProject()"> Add</button>
+        <button class="btn btn-success" style="margin-left: 20px;" (click)="events()"> Events</button>
+      </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let project of listProjects">
+      <td style="padding-left: {{project.level * 40}}px;">
+        <button class="btn" (click)="expand(project)" *ngIf="project.showPlus()">
+          +
+        </button>
+        <button class="btn" (click)="collapse(project)" *ngIf="project.showMinus()">
+          -
+        </button>
+        {{project.treeProject.code}}
+        <span *ngIf="!project.treeProject.loaded">loading...</span>
+      </td>
+      <td style="width: 250px; ">
+        <button class="btn btn-danger" (click)="addProject(project)"> Add</button>
+      	<button class="btn btn-success" (click)="deleteProject(project)" style="margin-left: 20px;" 
+          [disabled]="!project.canDelete">
+          Delete
+        </button>
+        <button class="btn btn-success" (click)="editProject(project)" style="margin-left: 20px;">
+          Edit
+        </button>
+    	</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

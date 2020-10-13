@@ -112,6 +112,10 @@ export class ListEventComponent implements OnInit {
     this.router.navigate(['report-week', {date: formatDate(date, 'yyyy-MM-dd', 'en-US')}]);
   }
 
+  projects(): void {
+    this.router.navigate(['list-project']);
+  }
+
   personal(): void {
     let date = new Date();
     let dateString = formatDate(date, 'yyyy-MM-dd', 'en-US');

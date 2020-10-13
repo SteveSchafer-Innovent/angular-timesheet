@@ -23,7 +23,6 @@ import { EditEventComponent } from './event/edit-event/edit-event.component';
 import { DurationPipe } from './duration.pipe';
 import { ProjectsPipe } from './projects.pipe';
 import { ListProjectComponent } from './project/list-project/list-project.component';
-import { AddProjectComponent } from './project/add-project/add-project.component';
 import { EditProjectComponent } from './project/edit-project/edit-project.component';
 import { WeekReportComponent } from './report/week/week-report.component';
 
@@ -39,7 +38,6 @@ import { WeekReportComponent } from './report/week/week-report.component';
     DurationPipe,
     ProjectsPipe,
     ListProjectComponent,
-    AddProjectComponent,
     EditProjectComponent,
     WeekReportComponent
   ],
