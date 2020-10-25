@@ -46,3 +46,7 @@ testem.log
 Thumbs.db
 
 *.backup
+/src/environments/environment.steve.ts
+serve.log
+serve.err.log
+mozilla.pdf

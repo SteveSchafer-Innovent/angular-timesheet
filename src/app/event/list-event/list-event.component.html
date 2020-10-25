@@ -1,4 +1,4 @@
-<div class="col-md-8 event-container">
+<div class="col-md-10 event-container">
   <h2 style="margin: auto"> {{getDateString(0)}} Events</h2>
   <table class="table table-striped">
     <thead>
@@ -23,6 +23,9 @@
         <button class="btn" style="margin-left: 20px; color: white; background-color: #007bff; " (click)="personal()">
           Personal
         </button>
+        <button class="btn"  style="margin-left: 20px;" (click)="logout()">
+          Logout
+        </button>
       </td>
     </tr>
     <tr>
@@ -31,7 +34,7 @@
       <th>Projects</th>
       <th>Duration</th>
       <th>Comment</th>
-      <th></th>
+      <th style="width: 250px;"></th>
     </tr>
     </thead>
     <tbody>

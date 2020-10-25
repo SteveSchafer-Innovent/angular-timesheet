@@ -54,9 +54,13 @@ import { WeekReportComponent } from './report/week/week-report.component';
     MatNativeDateModule,
     MatInputModule
   ],
-  providers: [ApiService, {provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptor,
-    multi : true}],
+  providers: [
+    ApiService, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi : true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

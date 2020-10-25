@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
-import {ApiService} from "../service/api.service";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { ApiService } from "../service/api.service";
 
 @Component({
   selector: 'app-login',
@@ -9,12 +9,25 @@ import {ApiService} from "../service/api.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
   loginForm: FormGroup;
   invalidLogin: boolean = false;
-  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService) { }
+
+  constructor(
+    private formBuilder: FormBuilder, 
+    private router: Router, 
+    private apiService: ApiService
+  ) { }
+
+  ngOnInit() {
+    window.localStorage.removeItem('token');
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.compose([Validators.required])],
+      password: ['', Validators.required]
+    });
+  }
 
   onSubmit() {
+    console.log("login.onSubmit");
     if (this.loginForm.invalid) {
       return;
     }
@@ -23,6 +36,7 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.controls.password.value
     }
     this.apiService.login(loginPayload).subscribe(data => {
+      console.log(data);
       if(data.status === 200) {
         window.localStorage.setItem('token', data.result.token);
         this.router.navigate(['list-event']);
@@ -33,13 +47,4 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-
-  ngOnInit() {
-    window.localStorage.removeItem('token');
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.compose([Validators.required])],
-      password: ['', Validators.required]
-    });
-  }
-
 }

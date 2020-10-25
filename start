@@ -1,0 +1,4 @@
+#!/bin/sh
+cd "$(dirname "${BASH_SOURCE[0]}")"
+./tunnel
+ng serve > serve.log 2> serve.err.log &

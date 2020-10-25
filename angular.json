@@ -30,6 +30,35 @@
             "scripts": []
           },
           "configurations": {
+            "steve": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.steve.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -67,6 +96,9 @@
             "browserTarget": "angular-timesheet:build"
           },
           "configurations": {
+            "steve": {
+              "browserTarget": "angular-timesheet:build:steve"
+            },
             "production": {
               "browserTarget": "angular-timesheet:build:production"
             }
@@ -116,6 +148,9 @@
             "devServerTarget": "angular-timesheet:serve"
           },
           "configurations": {
+            "steve": {
+              "devServerTarget": "angular-timesheet:serve:steve"
+            },
             "production": {
               "devServerTarget": "angular-timesheet:serve:production"
             }

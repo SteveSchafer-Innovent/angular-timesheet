@@ -1,3 +1,6 @@
 export const environment = {
-  production: true
+  production: true,
+  username: null,
+  password: null,
+  port: 9080
 };

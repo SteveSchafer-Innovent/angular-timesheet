@@ -62,11 +62,10 @@ export class WeekReportComponent implements OnInit {
   }
 
   doReport(rows): void {
-    this.rows = rows;
     this.maxProjectCount = 0;
     this.maxDurationCount = 0;
-    for(let i = 0; i < this.rows.length; i++) {
-      let row = this.rows[i];
+    for(let i = 0; i < rows.length; i++) {
+      let row = rows[i];
       if(this.maxProjectCount < row.projects.length) {
         this.maxProjectCount = row.projects.length;
       }
@@ -91,8 +90,8 @@ export class WeekReportComponent implements OnInit {
       projTotals.push(t);
     }
     let newRows = [];
-    for(let i = 0; i < this.rows.length; i++) {
-      let row = this.rows[i];
+    for(let i = 0; i < rows.length; i++) {
+      let row = rows[i];
       for(let p = row.projects.length; p < this.maxProjectCount; p++) {
         row.projects[p] = '';
       }
@@ -135,7 +134,7 @@ export class WeekReportComponent implements OnInit {
       newRows.push(row);
     }
     this.rows = newRows;
-    }
+  }
 
   getDateString(delta: number): string {
     let newDate = new Date(this.selectedDate);

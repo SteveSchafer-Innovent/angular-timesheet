@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 
 import { Observable } from "rxjs/index";
+import { catchError, retry } from 'rxjs/operators';
+import { throwError, concat, of } from 'rxjs';
 
+import { environment } from '../../environments/environment';
 import { User } from "../model/user.model";
 import { Event } from "../model/event.model";
 import { FormEvent } from "../model/form-event.model";
@@ -12,11 +15,15 @@ import { ApiResponse } from "../model/api.response";
 
 @Injectable()
 export class ApiService {
+  baseUrl: string;
 
-  constructor(private http: HttpClient) { }
-  baseUrl: string = 'http://localhost:9080';
+  constructor(private http: HttpClient) {
+    this.baseUrl = `http://localhost:${environment.port}`;
+    console.log(`baseUrl = ${this.baseUrl}`);
+  }
 
   login(loginPayload) : Observable<ApiResponse> {
+    console.log(loginPayload);
     return this.http.post<ApiResponse>(`${this.baseUrl}/token/generate-token`, loginPayload);
   }
 
@@ -151,5 +158,21 @@ export class ApiService {
     console.log(`apiService canDeleteProject ${id}`);
     let response = this.http.get<ApiResponse>(`${this.baseUrl}/project/canDelete/${id}`);
     return response;
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    }
+    else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(error);
   }
 }

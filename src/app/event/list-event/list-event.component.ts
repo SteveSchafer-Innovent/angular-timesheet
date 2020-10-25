@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { formatDate } from '@angular/common';
 
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { switchMap, catchError, retry } from 'rxjs/operators';
 
+import { environment } from '../../../environments/environment';
 import { ReportEvent } from "../../model/report-event.model";
 import { ApiService } from "../../service/api.service";
 import { Event } from "../../model/event.model";
@@ -28,36 +29,74 @@ export class ListEventComponent implements OnInit {
 
   ngOnInit() {
     console.log('ListEventComponent.ngOnInit');
-    if(!window.localStorage.getItem('token')) {
-      this.router.navigate(['login']);
-      return;
-    }
-    // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
-    function parseDateISOString(s: string): Date {
-      let ds = s.split(/\D+/).map(s => parseInt(s));
-      ds[1] = ds[1] - 1; // adjust month
-      return new Date(ds[0], ds[1], ds[2]);
-    }
-    let observable = this.route.paramMap.pipe(
-      switchMap(params => {
-        let dateString = params.get('date');
-        if(dateString == null) {
-          this.selectedDate = new Date();
-          this.isToday = true;
-          dateString = formatDate(this.selectedDate, 'yyyy-MM-dd', 'en-US');
+    let component = this;
+    function loadPage(): void {
+      // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
+      function parseDateISOString(s: string): Date {
+        let ds = s.split(/\D+/).map(s => parseInt(s));
+        ds[1] = ds[1] - 1; // adjust month
+        return new Date(ds[0], ds[1], ds[2]);
+      }
+      let observable = component.route.paramMap.pipe(
+        switchMap(params => {
+          let dateString = params.get('date');
+          if(dateString == null) {
+            component.selectedDate = new Date();
+            component.isToday = true;
+            dateString = formatDate(component.selectedDate, 'yyyy-MM-dd', 'en-US');
+          }
+          else {
+            component.selectedDate = parseDateISOString(dateString);
+            console.log(component.selectedDate);
+            component.isToday = component.selectedDate.getDate() == new Date().getDate();
+          }
+          return component.apiService.getEvents(dateString);
+        })
+      );
+      observable.subscribe( data => {
+        if(data.status === 401) {
+          console.log('removing token');
+          window.localStorage.removeItem('token');
+          let dateString = formatDate(component.selectedDate, 'yyyy-MM-dd', 'en-US');
+          component.router.navigate(['list-event', { date: dateString }]);
         }
         else {
-          this.selectedDate = parseDateISOString(dateString);
-          console.log(this.selectedDate);
-          this.isToday = this.selectedDate.getDate() == new Date().getDate();
+          console.log("data:");
+          console.log(data);
+          component.reportEvents = data.result;
         }
-        return this.apiService.getEvents(dateString);
-      })
-    );
-    observable.subscribe( data => {
-      console.log(data.result);
-      this.reportEvents = data.result;
-    });
+      });
+    }
+    if(environment.username != null) {
+      if(!window.localStorage.getItem('token')) {
+        console.log(environment.username);
+        const loginPayload = {
+          username: environment.username,
+          password: environment.password
+        }
+        this.apiService.login(loginPayload).subscribe(data => {
+          if(data.status === 200) {
+            console.log(data.result.token);
+            window.localStorage.setItem('token', data.result.token);
+            loadPage();
+          }
+          else {
+            alert(data.message);
+          }
+        });
+      }
+      else {
+        loadPage();
+      }
+    }
+    else {
+      if(!window.localStorage.getItem('token')) {
+        this.router.navigate(['login']);
+      }
+      else {
+        loadPage();
+      }
+    }
   }
 
   deleteEvent(event: Event): void {
@@ -84,10 +123,15 @@ export class ListEventComponent implements OnInit {
   }
 
   getDateString(delta: number): string {
-    let newDate = new Date(this.selectedDate);
-    newDate.setDate(newDate.getDate() + delta);
-    let dateString = formatDate(newDate, 'yyyy-MM-dd', 'en-US');
-    return dateString;
+    try {
+      let newDate = new Date(this.selectedDate);
+      newDate.setDate(newDate.getDate() + delta);
+      let dateString = formatDate(newDate, 'yyyy-MM-dd', 'en-US');
+      return dateString;
+    }
+    catch(e) {
+      debugger
+    }
   }
 
    gotoDay(delta: number): void {
@@ -125,5 +169,9 @@ export class ListEventComponent implements OnInit {
       .subscribe( data => {
         this.gotoDay(null);
       });
+  }
+
+  logout(): void {
+    this.router.navigate(['login']);
   }
 }
