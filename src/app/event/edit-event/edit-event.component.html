@@ -26,13 +26,16 @@
               {{project.code}}
             </mat-option>'
           </mat-select>
-          <input matInput *ngIf="addProject(alt, level)" id="projectName" (keyup)="projectNameKeyup($event)">
-          <button class="btn btn-success" type="button" *ngIf="addProject(alt, level)" (click)="saveProjectName()">
-          	OK
-          </button>
-          <button class="btn btn-success" type="button" *ngIf="addProject(alt, level)" (click)="cancelProjectName()">
-          	Cancel
-          </button>
+          <ng-container *ngIf="addProject(alt, level)">
+            <input matInput id="projectName" (keyup)="projectNameKeyup($event)">
+            <button class="btn btn-success" type="button" (click)="saveProjectName()">
+            	OK
+            </button>
+            <button class="btn btn-success" type="button" (click)="cancelProjectName()"
+                style="margin-left: 20px; ">
+            	Cancel
+            </button>
+          </ng-container>
         </mat-form-field>
       </div>
     </div>
@@ -45,6 +48,7 @@
 
     </div>
 
-    <button class="btn btn-success" type="submit" [disabled]="!editForm.valid">{{title}}</button>
+    <button class="btn btn-success" type="submit" [disabled]="!editForm.valid">Save</button>
+    <button class="btn btn-success" type="cancel" style="margin-left: 20px; " (click)="cancel()">Cancel</button>
   </form>
 </div>

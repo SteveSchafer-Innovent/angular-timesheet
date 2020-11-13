@@ -16,13 +16,18 @@ export class ListUserComponent implements OnInit {
 
   ngOnInit() {
     if(!window.localStorage.getItem('token')) {
-      this.router.navigate(['login']);
+      alert('Not logged in');
+      this.router.navigate(['list-event']);
       return;
     }
-    this.apiService.getUsers()
-      .subscribe( data => {
-        this.users = data.result;
-      });
+    this.apiService.getUsers().subscribe( data => {
+      if(data.status === 401) {
+        alert('Unauthorized');
+        this.router.navigate(['list-event']);
+        return;
+      }
+      this.users = data.result;
+    });
   }
 
   deleteUser(user: User): void {

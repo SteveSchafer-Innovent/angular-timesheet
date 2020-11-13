@@ -9,6 +9,7 @@ import { EditEventComponent } from "./event/edit-event/edit-event.component";
 import { ListProjectComponent } from "./project/list-project/list-project.component";
 import { EditProjectComponent } from "./project/edit-project/edit-project.component";
 import { WeekReportComponent } from "./report/week/week-report.component";
+import { UploadFileComponent } from "./upload-file/upload-file.component";
 
 const routes: Routes = [
   { path: 'add-user', component: AddUserComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'edit-project', component: EditProjectComponent },
   { path: 'report-week', component: WeekReportComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'upload-file', component: UploadFileComponent },
   { path : '', component : environment.username == null ? LoginComponent : ListEventComponent }
 ];
 

@@ -1,0 +1,44 @@
+<div class="upload-report uploads">
+<table class="upload-report">
+  <tr>
+    <th>ID</th>
+    <th>Upload Date</th>
+    <th>File Name</th>
+    <th>Min Event Date</th>
+    <th>Max Event Date</th>
+  </tr>
+  <tr class="uploads" *ngFor="let uploadRow of uploadRows" (click)="showDetail(uploadRow.uploadId)"
+      [ngStyle]="{background: currentUploadId == uploadRow.uploadId ? '#ccc' : '#fff'}">
+    <td>{{uploadRow.uploadId}}</td>
+    <td>{{uploadRow.uploadDate | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+    <td>{{uploadRow.filename}}</td>
+    <td>{{uploadRow.minDate | date : 'yyyy-MM-dd'}}</td>
+    <td>{{uploadRow.maxDate | date : 'yyyy-MM-dd'}}</td>
+  </tr>
+</table>
+</div>
+<div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+  <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+</div>
+<div class="upload-report">
+<table class="upload-report">
+  <tr>
+    <th>Event ID</th>
+    <th>Time</th>
+    <th>Client</th>
+    <th>Project</th>
+    <th>Task</th>
+    <th>Notes</th>
+    <th>Hours</th>
+  </tr>
+  <tr *ngFor="let detailRow of detailRows">
+    <td>{{detailRow.eventId}}</td>
+    <td>{{detailRow.date | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+    <td>{{detailRow.client.name}}</td>
+    <td>{{detailRow.project.name}}</td>
+    <td>{{detailRow.task.name}}</td>
+    <td>{{detailRow.notes}}</td>
+    <td>{{detailRow.hours}}</td>
+  </tr>
+</table>
+</div>

@@ -61,7 +61,8 @@ export class ListProjectComponent implements OnInit {
 
   ngOnInit(): void {
     if(!window.localStorage.getItem('token')) {
-      this.router.navigate(['login']);
+      alert('Not logged in');
+      this.router.navigate(['list-event']);
       return;
     }
     this.load();
@@ -71,6 +72,11 @@ export class ListProjectComponent implements OnInit {
     this.listProjects = [];
     this.rootProjects = [];
     this.apiService.getRootProjects().subscribe( data => {
+      if(data.status === 401) {
+        alert('Unauthorized');
+        this.router.navigate(['list-event']);
+        return;
+      }
       for(let i = 0; i < data.result.length; i++) {
         let dataResult = data.result[i];
         let rootProject = new TreeProject(null, dataResult.id, dataResult.code);

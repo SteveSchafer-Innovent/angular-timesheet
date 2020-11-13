@@ -29,74 +29,79 @@ export class ListEventComponent implements OnInit {
 
   ngOnInit() {
     console.log('ListEventComponent.ngOnInit');
+    // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
+    function parseDateISOString(s: string): Date {
+      let ds = s.split(/\D+/).map(s => parseInt(s));
+      ds[1] = ds[1] - 1; // adjust month
+      return new Date(ds[0], ds[1], ds[2]);
+    }
     let component = this;
-    function loadPage(): void {
-      // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
-      function parseDateISOString(s: string): Date {
-        let ds = s.split(/\D+/).map(s => parseInt(s));
-        ds[1] = ds[1] - 1; // adjust month
-        return new Date(ds[0], ds[1], ds[2]);
-      }
-      let observable = component.route.paramMap.pipe(
-        switchMap(params => {
-          let dateString = params.get('date');
-          if(dateString == null) {
-            component.selectedDate = new Date();
-            component.isToday = true;
-            dateString = formatDate(component.selectedDate, 'yyyy-MM-dd', 'en-US');
-          }
-          else {
-            component.selectedDate = parseDateISOString(dateString);
-            console.log(component.selectedDate);
-            component.isToday = component.selectedDate.getDate() == new Date().getDate();
-          }
-          return component.apiService.getEvents(dateString);
-        })
-      );
-      observable.subscribe( data => {
-        if(data.status === 401) {
-          console.log('removing token');
-          window.localStorage.removeItem('token');
-          let dateString = formatDate(component.selectedDate, 'yyyy-MM-dd', 'en-US');
-          component.router.navigate(['list-event', { date: dateString }]);
+    let observable = component.route.paramMap.pipe(
+      switchMap(params => {
+        let dateString = params.get('date');
+        if(dateString == null) {
+          component.selectedDate = new Date();
+          component.isToday = true;
+          dateString = formatDate(component.selectedDate, 'yyyy-MM-dd', 'en-US');
         }
         else {
-          console.log("data:");
-          console.log(data);
-          component.reportEvents = data.result;
+          component.selectedDate = parseDateISOString(dateString);
+          console.log(component.selectedDate);
+          component.isToday = component.selectedDate.getDate() == new Date().getDate();
         }
-      });
-    }
-    if(environment.username != null) {
-      if(!window.localStorage.getItem('token')) {
-        console.log(environment.username);
-        const loginPayload = {
-          username: environment.username,
-          password: environment.password
-        }
-        this.apiService.login(loginPayload).subscribe(data => {
-          if(data.status === 200) {
-            console.log(data.result.token);
-            window.localStorage.setItem('token', data.result.token);
-            loadPage();
+        return of(dateString);
+      })
+    );
+    observable.subscribe(dateString => {
+      console.log("dateString:");
+      console.log(dateString);
+      function loadPage(): void {
+        let observable = component.apiService.getEvents(dateString);
+        observable.subscribe( data => {
+          if(data.status === 401) {
+            console.log('removing token');
+            window.localStorage.removeItem('token');
+            let dateString = formatDate(component.selectedDate, 'yyyy-MM-dd', 'en-US');
+            component.router.navigate(['list-event', { date: dateString }]);
           }
           else {
-            alert(data.message);
+            console.log("data:");
+            console.log(data);
+            component.reportEvents = data.result;
           }
         });
       }
+      if(environment.username != null) {
+        if(!window.localStorage.getItem('token')) {
+          console.log(environment.username);
+          const loginPayload = {
+            username: environment.username,
+            password: environment.password
+          }
+          this.apiService.login(loginPayload).subscribe(data => {
+            if(data.status === 200) {
+              window.localStorage.setItem('token', data.result.token);
+              loadPage();
+            }
+            else {
+              alert(data.message);
+            }
+          });
+        }
+        else {
+          loadPage();
+        }
+      }
       else {
-        loadPage();
+        if(!window.localStorage.getItem('token')) {
+          alert("token not found");
+          this.router.navigate(['login']);
+        }
+        else {
+          loadPage();
+        }
       }
-    }
-    else {
-      if(!window.localStorage.getItem('token')) {
-        this.router.navigate(['login']);
-      }
-      else {
-        loadPage();
-      }
-    }
+    });
   }
 
   deleteEvent(event: Event): void {
@@ -123,6 +128,10 @@ export class ListEventComponent implements OnInit {
   }
 
   getDateString(delta: number): string {
+    console.log('getDateString ' + this.selectedDate + " + " + delta);
+    if(typeof this.selectedDate == 'undefined') {
+      return '';
+    }
     try {
       let newDate = new Date(this.selectedDate);
       newDate.setDate(newDate.getDate() + delta);
@@ -146,6 +155,9 @@ export class ListEventComponent implements OnInit {
     let dateString = formatDate(this.selectedDate, 'yyyy-MM-dd', 'en-US');
     let observable = this.apiService.getEvents(dateString)
     observable.subscribe( data => {
+      if(data.status === 401) {
+        this.router.navigate(['login']);
+      }
       this.reportEvents = data.result;
     });
   }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute, ParamMap } from "@angular/router";
 import { MatSelectModule } from '@angular/material/select';
-import { formatDate } from '@angular/common';
+import { formatDate, Location } from '@angular/common';
 
 import { ApiService } from "../../service/api.service";
 import { Project } from '../../model/project.model';
@@ -19,6 +19,7 @@ export class EditEventComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
+    private location: Location,
     private apiService: ApiService
   ) { }
 
@@ -33,7 +34,8 @@ export class EditEventComponent implements OnInit {
 
   ngOnInit() {
     if(!window.localStorage.getItem('token')) {
-      this.router.navigate(['login']);
+      alert('Not logged in');
+      this.router.navigate(['list-event']);
       return;
     }
     this.title = '';
@@ -170,16 +172,18 @@ export class EditEventComponent implements OnInit {
     console.log(`saveProjectName ${this.addProjectAlt} ${this.addProjectLevel} ${this.addProjectParentId}`);
     let project = {id: null, parentId: this.addProjectParentId, code: this.addProjectName};
     let component = this;
-    this.apiService.createProject(project)
-      .subscribe( data => {
+    this.apiService.createProject(project).subscribe( data => {
+      console.log(data.result);
+      let newProject = data.result;
+      component.apiService.getProjects(this.addProjectParentId).subscribe( data => {
         console.log(data.result);
-        component.apiService.getProjects(this.addProjectParentId)
-          .subscribe( data => {
-            console.log(data.result);
-            component.populateProjectSelectionsLists(this.addProjectAlt, this.addProjectLevel, data, null);
-            component.cancelProjectName();
-        });
+        let selProj = [];
+        selProj[this.addProjectAlt] = [];
+        selProj[this.addProjectAlt][this.addProjectLevel] = newProject.id;
+        component.populateProjectSelectionsLists(this.addProjectAlt, this.addProjectLevel, data, selProj);
+        component.cancelProjectName();
       });
+    });
   }
 
   cancelProjectName(): void {
@@ -192,6 +196,10 @@ export class EditEventComponent implements OnInit {
 
   projectNameKeyup(event: any): void {
     this.addProjectName = event.target.value;
+  }
+
+  cancel() {
+    this.location.back();
   }
 
   onSubmit() {

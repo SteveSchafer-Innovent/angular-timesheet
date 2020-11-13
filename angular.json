@@ -59,6 +59,22 @@
                 }
               ]
             },
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
+            },
+            "dev-remote": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev-remote.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -98,6 +114,12 @@
           "configurations": {
             "steve": {
               "browserTarget": "angular-timesheet:build:steve"
+            },
+            "dev": {
+              "browserTarget": "angular-timesheet:build:dev"
+            },
+            "dev-remote": {
+              "browserTarget": "angular-timesheet:build:dev-remote"
             },
             "production": {
               "browserTarget": "angular-timesheet:build:production"
@@ -150,6 +172,12 @@
           "configurations": {
             "steve": {
               "devServerTarget": "angular-timesheet:serve:steve"
+            },
+            "dev": {
+              "devServerTarget": "angular-timesheet:serve:dev"
+            },
+            "dev-remote": {
+              "devServerTarget": "angular-timesheet:serve:dev-remote"
             },
             "production": {
               "devServerTarget": "angular-timesheet:serve:production"

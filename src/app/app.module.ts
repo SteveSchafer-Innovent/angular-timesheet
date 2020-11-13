@@ -25,6 +25,8 @@ import { ProjectsPipe } from './projects.pipe';
 import { ListProjectComponent } from './project/list-project/list-project.component';
 import { EditProjectComponent } from './project/edit-project/edit-project.component';
 import { WeekReportComponent } from './report/week/week-report.component';
+import { DragDropDirective } from './dragdrop.directive';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { WeekReportComponent } from './report/week/week-report.component';
     ProjectsPipe,
     ListProjectComponent,
     EditProjectComponent,
-    WeekReportComponent
+    WeekReportComponent,
+    DragDropDirective,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,8 @@ import { WeekReportComponent } from './report/week/week-report.component';
     MatInputModule
   ],
   providers: [
-    ApiService, {
+    ApiService,
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi : true
