@@ -10,6 +10,7 @@ import { ListProjectComponent } from "./project/list-project/list-project.compon
 import { EditProjectComponent } from "./project/edit-project/edit-project.component";
 import { WeekReportComponent } from "./report/week/week-report.component";
 import { UploadFileComponent } from "./upload-file/upload-file.component";
+import { TaskComponent } from "./report/netsuite-task/task.component";
 
 const routes: Routes = [
   { path: 'add-user', component: AddUserComponent },
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'report-week', component: WeekReportComponent },
   { path: 'login', component: LoginComponent },
   { path: 'upload-file', component: UploadFileComponent },
+  { path: 'report-netsuite-task', component: TaskComponent },
   { path : '', component : environment.username == null ? LoginComponent : ListEventComponent }
 ];
 

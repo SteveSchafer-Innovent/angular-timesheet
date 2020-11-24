@@ -11,6 +11,7 @@ class WeekReportProject {
   id: number;
   code: string;
 }
+
 class WeekReportRow {
   projects: WeekReportProject[];
   durations: number[];
@@ -72,10 +73,10 @@ export class WeekReportComponent implements OnInit {
   }
 
   doReport(rows): void {
+    console.log('doReport', rows);
     this.maxProjectCount = 0;
     this.maxDurationCount = 0;
-    for(let i = 0; i < rows.length; i++) {
-      let row = rows[i];
+    for(let row of rows) {
       if(this.maxProjectCount < row.projects.length) {
         this.maxProjectCount = row.projects.length;
       }
@@ -109,7 +110,8 @@ export class WeekReportComponent implements OnInit {
         row.durations[d] = 0;
       }
       for(let p = row.projects.length - 1; p >= 0; p--) {
-        if(prevProjects[p] != row.projects[p]) {
+        if(prevProjects[p].id != row.projects[p].id) {
+          // console.log('prevProject', prevProjects[p], 'project', row.projects[p], 'count', projCounts[p]);
           if(projCounts[p] > 1) {
             let totalRow = {projects: [], durations: [], isTotal: true};
             for(let pp = 0; pp < this.maxProjectCount; pp++) {
@@ -123,6 +125,7 @@ export class WeekReportComponent implements OnInit {
             for(let pt = 0; pt < this.maxDurationCount; pt++) {
               totalRow.durations[pt] = projTotals[p][pt];
             }
+            // console.log('totalRow', totalRow);
             newRows.push(totalRow);
           }
           projCounts[p] = 0;
@@ -140,23 +143,23 @@ export class WeekReportComponent implements OnInit {
         for(let d = 0; d < row.durations.length; d++) {
           projTotals[p][d] += row.durations[d];
         }
+        // console.log('project', row.projects[p], 'count', projCounts[p]);
       }
       newRows.push(row);
     }
     this.rows = newRows;
-    console.log(this.rows);
+    // console.log('rows', this.rows);
     for(let row of this.rows) {
       let project = this.getLeafProject(row);
-      console.log(project);
+      // console.log('project', project);
       if(!row.highlighted) {
         row.highlighted = [];
       }
       for(let d = 0; d < this.dates.length; d++) {
         let date = this.dates[d];
-        console.log(d, date)
+        // console.log(d, date)
         this.apiService.getWeekReportCell(project.id, date).subscribe( data => {
-          console.log('getWeekReportCell data', data);
-          row.highlighted[d] = data.result.checked;
+          row.highlighted[d] = data.result && data.result.checked;
         });
       }
     }

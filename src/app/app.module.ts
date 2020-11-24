@@ -27,6 +27,7 @@ import { EditProjectComponent } from './project/edit-project/edit-project.compon
 import { WeekReportComponent } from './report/week/week-report.component';
 import { DragDropDirective } from './dragdrop.directive';
 import { UploadFileComponent } from './upload-file/upload-file.component';
+import { TaskComponent } from './report/netsuite-task/task.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
     EditProjectComponent,
     WeekReportComponent,
     DragDropDirective,
-    UploadFileComponent
+    UploadFileComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,

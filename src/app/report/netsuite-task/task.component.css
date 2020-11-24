@@ -1,0 +1,13 @@
+.report-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.report-container table tr td.hours {
+	text-align: right;
+}
+
+.report-container table tr th.hours {
+	text-align: right;
+}

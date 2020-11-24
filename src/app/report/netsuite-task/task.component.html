@@ -1,0 +1,21 @@
+<div class="col-md-10 report-container">
+  <h2 style="margin: auto"> Netsuite Task Report</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Client</th>
+      <th>Project</th>
+      <th>Task</th>
+      <th class="hours">Hours</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of rows; let r=index">
+      <td>{{row.client}}</td>
+      <td>{{row.project}}</td>
+      <td>{{row.task}}</td>
+      <td class="hours">{{row.hours | number:'1.2-2'}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

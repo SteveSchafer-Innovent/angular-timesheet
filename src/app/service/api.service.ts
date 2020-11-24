@@ -340,4 +340,13 @@ export class ApiService {
       })
     );
   }
+
+  getNetsuiteTaskReport(): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${this.baseUrl}/netsuite-task-report`).pipe(
+      catchError(val => {
+        console.log('val:', val);
+        return of(val);
+      })
+    );
+  }
 }
